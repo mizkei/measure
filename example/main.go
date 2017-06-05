@@ -1,8 +1,3 @@
-# measure
-
-## usage
-
-```go
 package main
 
 import (
@@ -42,9 +37,4 @@ func main() {
 	for _, r := range res {
 		fmt.Printf("[%s] start:%s, end:%s\n", r.Func.Name(), r.Start.Format(time.Stamp), r.End.Format(time.Stamp))
 	}
-	// Output:
-	// [main.A] start:Jun  5 12:34:00, end:Jun  5 12:34:02
-	// [main.B] start:Jun  5 12:34:02, end:Jun  5 12:34:05
-	// [main.C] start:Jun  5 12:34:05, end:Jun  5 12:34:09
 }
-```
