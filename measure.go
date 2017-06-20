@@ -1,3 +1,4 @@
+// Package measure provide context timer.
 package measure
 
 import (
@@ -11,13 +12,19 @@ type ctxKey string
 
 const key ctxKey = "measure_key"
 
+// StopFunc stop measurement.
+type StopFunc func()
+
+// Result has measurement result.
 type Result struct {
 	Start, End time.Time
-	Func       *runtime.Func
-	File       string
-	Line       int
+	// Func, File, and Line are target function info
+	Func *runtime.Func
+	File string
+	Line int
 }
 
+// Results is array of Reuslt.
 type Results []Result
 
 type memo struct {
@@ -27,11 +34,13 @@ type memo struct {
 
 func doNothing() {}
 
+// ContextWithMeasure returns copy of the parent context with measure value.
 func ContextWithMeasure(ctx context.Context) context.Context {
 	v := make(Results, 0, 100)
 	return context.WithValue(ctx, key, &memo{res: &v})
 }
 
+// GetResults returns measurement result.
 func GetResults(ctx context.Context) Results {
 	res, ok := ctx.Value(key).(*memo)
 	if !ok || res == nil {
@@ -40,7 +49,9 @@ func GetResults(ctx context.Context) Results {
 	return *res.res
 }
 
-func Measure(ctx context.Context) func() {
+// Measure start measurement.
+// Measurement stops when the returned StopFunc is called.
+func Measure(ctx context.Context) StopFunc {
 	v, ok := ctx.Value(key).(*memo)
 	if !ok || v == nil {
 		return doNothing
