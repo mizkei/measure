@@ -1,5 +1,7 @@
 # measure
 
+[![GoDoc](https://godoc.org/github.com/mizkei/measure?status.svg)](https://godoc.org/github.com/mizkei/measure)
+
 ## usage
 
 ```go
